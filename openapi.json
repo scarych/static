@@ -1,0 +1,1173 @@
+{
+      "openapi": "3.0.0",
+      "info": {
+            "title": "Тестовая документация",
+            "description": "Пример автодокументации, собираемой на декораторах к маршрутам",
+            "contact": {
+                  "name": "Kholstinnikov Grigory",
+                  "email": "mail@scarych.ru"
+            },
+            "version": "1.0.0"
+      },
+      "components": {
+            "securitySchemes": {
+                  "AuthBase": {
+                        "type": "http",
+                        "scheme": "bearer"
+                  }
+            },
+            "schemas": {
+                  "SaleFormula": {
+                        "properties": {
+                              "position": {
+                                    "enum": [
+                                          "product",
+                                          "total"
+                                    ],
+                                    "type": "string",
+                                    "description": "Товарная позиция"
+                              },
+                              "criteria": {
+                                    "enum": [
+                                          "eq",
+                                          "gte",
+                                          "lte"
+                                    ],
+                                    "type": "string",
+                                    "description": "Условие для цены"
+                              },
+                              "costValue": {
+                                    "type": "number",
+                                    "description": "Ограничительное значение цены"
+                              }
+                        },
+                        "type": "object",
+                        "required": [
+                              "position"
+                        ]
+                  },
+                  "SaleConditions": {
+                        "properties": {
+                              "categoryId": {
+                                    "pattern": "^[0-9a-fA-F]{24}$",
+                                    "type": "string",
+                                    "description": "Требование к категории"
+                              },
+                              "brandId": {
+                                    "pattern": "^[0-9a-fA-F]{24}$",
+                                    "type": "string",
+                                    "description": "Требование к бренду"
+                              },
+                              "formulas": {
+                                    "items": {
+                                          "$ref": "#/components/schemas/SaleFormula"
+                                    },
+                                    "type": "array",
+                                    "description": "Формула"
+                              }
+                        },
+                        "type": "object",
+                        "required": [
+                              "formulas"
+                        ]
+                  }
+            }
+      },
+      "paths": {
+            "/wtf": {
+                  "get": {
+                        "responses": {
+                              "200": {
+                                    "description": "Стандартный ответ",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "type": "string"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/docs.json": {
+                  "get": {
+                        "description": "return json data with whole documentation [`OAS3`](https://swagger.io/specification/)",
+                        "summary": "JSON OpenAPI documentation",
+                        "responses": {
+                              "200": {
+                                    "description": "JSON структура документов",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "type": "object"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/docs.html": {
+                  "get": {
+                        "description": "show documentation with openapi-explorer",
+                        "summary": "Show OpenAPI documentation",
+                        "responses": {
+                              "200": {
+                                    "description": "Документация",
+                                    "content": {
+                                          "text/html": {
+                                                "schema": {
+                                                      "type": "string"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/": {
+                  "get": {
+                        "summary": "app index",
+                        "security": [
+                              {
+                                    "AuthBase": []
+                              }
+                        ],
+                        "responses": {
+                              "401": {
+                                    "description": "access denied",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/app2": {
+                  "get": {
+                        "summary": "app index",
+                        "security": [
+                              {
+                                    "AuthBase": []
+                              }
+                        ],
+                        "responses": {
+                              "401": {
+                                    "description": "access denied",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/gql": {
+                  "get": {
+                        "responses": {
+                              "200": {
+                                    "description": "gql data",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "type": "string"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/catalogs/categories": {
+                  "get": {
+                        "summary": "Список данных",
+                        "tags": [
+                              "Управление каталогом+Категории товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Список данных",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "type": "array",
+                                                      "items": {
+                                                            "properties": {
+                                                                  "name": {
+                                                                        "type": "string",
+                                                                        "description": "Category name",
+                                                                        "example": "Shoes"
+                                                                  },
+                                                                  "_id": {
+                                                                        "pattern": "^[0-9a-fA-F]{24}$",
+                                                                        "type": "string",
+                                                                        "description": "data id",
+                                                                        "readOnly": true,
+                                                                        "example": "616204c49c77be1d9ea1c0c9"
+                                                                  },
+                                                                  "createdAt": {
+                                                                        "type": "string",
+                                                                        "format": "date-time",
+                                                                        "description": "created time",
+                                                                        "readOnly": true,
+                                                                        "example": "2021-10-09T21:06:40.386Z"
+                                                                  },
+                                                                  "updatedAt": {
+                                                                        "type": "string",
+                                                                        "format": "date-time",
+                                                                        "description": "last updated time",
+                                                                        "readOnly": true,
+                                                                        "example": "2021-10-09T21:08:20.386Z"
+                                                                  },
+                                                                  "enabled": {
+                                                                        "enum": [
+                                                                              "yes",
+                                                                              "no"
+                                                                        ],
+                                                                        "type": "string",
+                                                                        "description": "flag of activity",
+                                                                        "default": "yes"
+                                                                  },
+                                                                  "customerId": {
+                                                                        "pattern": "^[0-9a-fA-F]{24}$",
+                                                                        "type": "string",
+                                                                        "description": "Customer relation",
+                                                                        "example": "616204c49c77be1d9ea1c0ca"
+                                                                  }
+                                                            },
+                                                            "type": "object",
+                                                            "required": [
+                                                                  "name",
+                                                                  "customerId"
+                                                            ],
+                                                            "description": "Categories catalog"
+                                                      }
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  },
+                  "post": {
+                        "summary": "Добавление данных",
+                        "requestBody": {
+                              "content": {
+                                    "application/json": {
+                                          "schema": {
+                                                "properties": {
+                                                      "name": {
+                                                            "type": "string",
+                                                            "description": "Category name",
+                                                            "example": "Shoes"
+                                                      },
+                                                      "_id": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "data id",
+                                                            "readOnly": true,
+                                                            "example": "616204c49c77be1d9ea1c0c9"
+                                                      },
+                                                      "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "created time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:06:40.386Z"
+                                                      },
+                                                      "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "last updated time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:08:20.386Z"
+                                                      },
+                                                      "enabled": {
+                                                            "enum": [
+                                                                  "yes",
+                                                                  "no"
+                                                            ],
+                                                            "type": "string",
+                                                            "description": "flag of activity",
+                                                            "default": "yes"
+                                                      },
+                                                      "customerId": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "Customer relation",
+                                                            "example": "616204c49c77be1d9ea1c0ca"
+                                                      }
+                                                },
+                                                "type": "object",
+                                                "required": [
+                                                      "name",
+                                                      "customerId"
+                                                ],
+                                                "description": "Categories catalog"
+                                          }
+                                    }
+                              }
+                        },
+                        "tags": [
+                              "Управление каталогом+Категории товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Новый элемент",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "name": {
+                                                                  "type": "string",
+                                                                  "description": "Category name",
+                                                                  "example": "Shoes"
+                                                            },
+                                                            "_id": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "data id",
+                                                                  "readOnly": true,
+                                                                  "example": "616204c49c77be1d9ea1c0c9"
+                                                            },
+                                                            "createdAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "created time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:06:40.386Z"
+                                                            },
+                                                            "updatedAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "last updated time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:08:20.386Z"
+                                                            },
+                                                            "enabled": {
+                                                                  "enum": [
+                                                                        "yes",
+                                                                        "no"
+                                                                  ],
+                                                                  "type": "string",
+                                                                  "description": "flag of activity",
+                                                                  "default": "yes"
+                                                            },
+                                                            "customerId": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "Customer relation",
+                                                                  "example": "616204c49c77be1d9ea1c0ca"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "name",
+                                                            "customerId"
+                                                      ],
+                                                      "description": "Categories catalog"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/catalogs/categories/{id}": {
+                  "patch": {
+                        "summary": "Изменение данных",
+                        "requestBody": {
+                              "content": {
+                                    "application/json": {
+                                          "schema": {
+                                                "properties": {
+                                                      "name": {
+                                                            "type": "string",
+                                                            "description": "Category name",
+                                                            "example": "Shoes"
+                                                      },
+                                                      "_id": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "data id",
+                                                            "readOnly": true,
+                                                            "example": "616204c49c77be1d9ea1c0c9"
+                                                      },
+                                                      "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "created time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:06:40.386Z"
+                                                      },
+                                                      "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "last updated time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:08:20.386Z"
+                                                      },
+                                                      "enabled": {
+                                                            "enum": [
+                                                                  "yes",
+                                                                  "no"
+                                                            ],
+                                                            "type": "string",
+                                                            "description": "flag of activity",
+                                                            "default": "yes"
+                                                      },
+                                                      "customerId": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "Customer relation",
+                                                            "example": "616204c49c77be1d9ea1c0ca"
+                                                      }
+                                                },
+                                                "type": "object",
+                                                "required": [
+                                                      "name",
+                                                      "customerId"
+                                                ],
+                                                "description": "Categories catalog"
+                                          }
+                                    }
+                              }
+                        },
+                        "tags": [
+                              "Управление каталогом+Категории товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Элемент каталога",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "name": {
+                                                                  "type": "string",
+                                                                  "description": "Category name",
+                                                                  "example": "Shoes"
+                                                            },
+                                                            "_id": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "data id",
+                                                                  "readOnly": true,
+                                                                  "example": "616204c49c77be1d9ea1c0c9"
+                                                            },
+                                                            "createdAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "created time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:06:40.386Z"
+                                                            },
+                                                            "updatedAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "last updated time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:08:20.386Z"
+                                                            },
+                                                            "enabled": {
+                                                                  "enum": [
+                                                                        "yes",
+                                                                        "no"
+                                                                  ],
+                                                                  "type": "string",
+                                                                  "description": "flag of activity",
+                                                                  "default": "yes"
+                                                            },
+                                                            "customerId": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "Customer relation",
+                                                                  "example": "616204c49c77be1d9ea1c0ca"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "name",
+                                                            "customerId"
+                                                      ],
+                                                      "description": "Categories catalog"
+                                                }
+                                          }
+                                    }
+                              },
+                              "404": {
+                                    "description": "Сообщение об ошибке",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": [
+                              {
+                                    "in": "path",
+                                    "required": true,
+                                    "name": "id",
+                                    "schema": {
+                                          "type": "string",
+                                          "pattern": "^[0-9,a-f,A-F]{24}$"
+                                    },
+                                    "description": "Идентификатор"
+                              }
+                        ]
+                  },
+                  "delete": {
+                        "summary": "Удаление данных",
+                        "tags": [
+                              "Управление каталогом+Категории товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Стандартное сообщение",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "message"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "message"
+                                                      ],
+                                                      "description": "Стандартное сообщение"
+                                                }
+                                          }
+                                    }
+                              },
+                              "404": {
+                                    "description": "Сообщение об ошибке",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": [
+                              {
+                                    "in": "path",
+                                    "required": true,
+                                    "name": "id",
+                                    "schema": {
+                                          "type": "string",
+                                          "pattern": "^[0-9,a-f,A-F]{24}$"
+                                    },
+                                    "description": "Идентификатор"
+                              }
+                        ]
+                  }
+            },
+            "/catalogs/brands": {
+                  "get": {
+                        "summary": "Список данных",
+                        "tags": [
+                              "Управление каталогом+Бренды товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Список данных",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "type": "array",
+                                                      "items": {
+                                                            "properties": {
+                                                                  "name": {
+                                                                        "type": "string",
+                                                                        "description": "Brand name",
+                                                                        "example": "Nike"
+                                                                  },
+                                                                  "_id": {
+                                                                        "pattern": "^[0-9a-fA-F]{24}$",
+                                                                        "type": "string",
+                                                                        "description": "data id",
+                                                                        "readOnly": true,
+                                                                        "example": "616204c49c77be1d9ea1c0c9"
+                                                                  },
+                                                                  "createdAt": {
+                                                                        "type": "string",
+                                                                        "format": "date-time",
+                                                                        "description": "created time",
+                                                                        "readOnly": true,
+                                                                        "example": "2021-10-09T21:06:40.386Z"
+                                                                  },
+                                                                  "updatedAt": {
+                                                                        "type": "string",
+                                                                        "format": "date-time",
+                                                                        "description": "last updated time",
+                                                                        "readOnly": true,
+                                                                        "example": "2021-10-09T21:08:20.386Z"
+                                                                  },
+                                                                  "enabled": {
+                                                                        "enum": [
+                                                                              "yes",
+                                                                              "no"
+                                                                        ],
+                                                                        "type": "string",
+                                                                        "description": "flag of activity",
+                                                                        "default": "yes"
+                                                                  },
+                                                                  "customerId": {
+                                                                        "pattern": "^[0-9a-fA-F]{24}$",
+                                                                        "type": "string",
+                                                                        "description": "Customer relation",
+                                                                        "example": "616204c49c77be1d9ea1c0ca"
+                                                                  }
+                                                            },
+                                                            "type": "object",
+                                                            "required": [
+                                                                  "name",
+                                                                  "customerId"
+                                                            ],
+                                                            "description": "Brands catalog"
+                                                      }
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  },
+                  "post": {
+                        "summary": "Добавление данных",
+                        "requestBody": {
+                              "content": {
+                                    "application/json": {
+                                          "schema": {
+                                                "properties": {
+                                                      "name": {
+                                                            "type": "string",
+                                                            "description": "Brand name",
+                                                            "example": "Nike"
+                                                      },
+                                                      "_id": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "data id",
+                                                            "readOnly": true,
+                                                            "example": "616204c49c77be1d9ea1c0c9"
+                                                      },
+                                                      "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "created time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:06:40.386Z"
+                                                      },
+                                                      "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "last updated time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:08:20.386Z"
+                                                      },
+                                                      "enabled": {
+                                                            "enum": [
+                                                                  "yes",
+                                                                  "no"
+                                                            ],
+                                                            "type": "string",
+                                                            "description": "flag of activity",
+                                                            "default": "yes"
+                                                      },
+                                                      "customerId": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "Customer relation",
+                                                            "example": "616204c49c77be1d9ea1c0ca"
+                                                      }
+                                                },
+                                                "type": "object",
+                                                "required": [
+                                                      "name",
+                                                      "customerId"
+                                                ],
+                                                "description": "Brands catalog"
+                                          }
+                                    }
+                              }
+                        },
+                        "tags": [
+                              "Управление каталогом+Бренды товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Новый элемент",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "name": {
+                                                                  "type": "string",
+                                                                  "description": "Brand name",
+                                                                  "example": "Nike"
+                                                            },
+                                                            "_id": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "data id",
+                                                                  "readOnly": true,
+                                                                  "example": "616204c49c77be1d9ea1c0c9"
+                                                            },
+                                                            "createdAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "created time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:06:40.386Z"
+                                                            },
+                                                            "updatedAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "last updated time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:08:20.386Z"
+                                                            },
+                                                            "enabled": {
+                                                                  "enum": [
+                                                                        "yes",
+                                                                        "no"
+                                                                  ],
+                                                                  "type": "string",
+                                                                  "description": "flag of activity",
+                                                                  "default": "yes"
+                                                            },
+                                                            "customerId": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "Customer relation",
+                                                                  "example": "616204c49c77be1d9ea1c0ca"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "name",
+                                                            "customerId"
+                                                      ],
+                                                      "description": "Brands catalog"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": []
+                  }
+            },
+            "/catalogs/brands/{id}": {
+                  "patch": {
+                        "summary": "Изменение данных",
+                        "requestBody": {
+                              "content": {
+                                    "application/json": {
+                                          "schema": {
+                                                "properties": {
+                                                      "name": {
+                                                            "type": "string",
+                                                            "description": "Brand name",
+                                                            "example": "Nike"
+                                                      },
+                                                      "_id": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "data id",
+                                                            "readOnly": true,
+                                                            "example": "616204c49c77be1d9ea1c0c9"
+                                                      },
+                                                      "createdAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "created time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:06:40.386Z"
+                                                      },
+                                                      "updatedAt": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "description": "last updated time",
+                                                            "readOnly": true,
+                                                            "example": "2021-10-09T21:08:20.386Z"
+                                                      },
+                                                      "enabled": {
+                                                            "enum": [
+                                                                  "yes",
+                                                                  "no"
+                                                            ],
+                                                            "type": "string",
+                                                            "description": "flag of activity",
+                                                            "default": "yes"
+                                                      },
+                                                      "customerId": {
+                                                            "pattern": "^[0-9a-fA-F]{24}$",
+                                                            "type": "string",
+                                                            "description": "Customer relation",
+                                                            "example": "616204c49c77be1d9ea1c0ca"
+                                                      }
+                                                },
+                                                "type": "object",
+                                                "required": [
+                                                      "name",
+                                                      "customerId"
+                                                ],
+                                                "description": "Brands catalog"
+                                          }
+                                    }
+                              }
+                        },
+                        "tags": [
+                              "Управление каталогом+Бренды товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Элемент каталога",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "name": {
+                                                                  "type": "string",
+                                                                  "description": "Brand name",
+                                                                  "example": "Nike"
+                                                            },
+                                                            "_id": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "data id",
+                                                                  "readOnly": true,
+                                                                  "example": "616204c49c77be1d9ea1c0c9"
+                                                            },
+                                                            "createdAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "created time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:06:40.386Z"
+                                                            },
+                                                            "updatedAt": {
+                                                                  "type": "string",
+                                                                  "format": "date-time",
+                                                                  "description": "last updated time",
+                                                                  "readOnly": true,
+                                                                  "example": "2021-10-09T21:08:20.386Z"
+                                                            },
+                                                            "enabled": {
+                                                                  "enum": [
+                                                                        "yes",
+                                                                        "no"
+                                                                  ],
+                                                                  "type": "string",
+                                                                  "description": "flag of activity",
+                                                                  "default": "yes"
+                                                            },
+                                                            "customerId": {
+                                                                  "pattern": "^[0-9a-fA-F]{24}$",
+                                                                  "type": "string",
+                                                                  "description": "Customer relation",
+                                                                  "example": "616204c49c77be1d9ea1c0ca"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "name",
+                                                            "customerId"
+                                                      ],
+                                                      "description": "Brands catalog"
+                                                }
+                                          }
+                                    }
+                              },
+                              "404": {
+                                    "description": "Сообщение об ошибке",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": [
+                              {
+                                    "in": "path",
+                                    "required": true,
+                                    "name": "id",
+                                    "schema": {
+                                          "type": "string",
+                                          "pattern": "^[0-9,a-f,A-F]{24}$"
+                                    },
+                                    "description": "Идентификатор"
+                              }
+                        ]
+                  },
+                  "delete": {
+                        "summary": "Удаление данных",
+                        "tags": [
+                              "Управление каталогом+Бренды товаров"
+                        ],
+                        "responses": {
+                              "200": {
+                                    "description": "Стандартное сообщение",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "message"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "message"
+                                                      ],
+                                                      "description": "Стандартное сообщение"
+                                                }
+                                          }
+                                    }
+                              },
+                              "404": {
+                                    "description": "Сообщение об ошибке",
+                                    "content": {
+                                          "application/json": {
+                                                "schema": {
+                                                      "properties": {
+                                                            "status": {
+                                                                  "type": "number",
+                                                                  "description": "code of error"
+                                                            },
+                                                            "message": {
+                                                                  "type": "string",
+                                                                  "description": "error message"
+                                                            },
+                                                            "data": {
+                                                                  "anyOf": [
+                                                                        {
+                                                                              "type": "array",
+                                                                              "items": {
+                                                                                    "type": "object"
+                                                                              }
+                                                                        },
+                                                                        {
+                                                                              "type": "object"
+                                                                        }
+                                                                  ],
+                                                                  "description": "error details"
+                                                            }
+                                                      },
+                                                      "type": "object",
+                                                      "required": [
+                                                            "status",
+                                                            "message"
+                                                      ],
+                                                      "description": "standart error response"
+                                                }
+                                          }
+                                    }
+                              }
+                        },
+                        "parameters": [
+                              {
+                                    "in": "path",
+                                    "required": true,
+                                    "name": "id",
+                                    "schema": {
+                                          "type": "string",
+                                          "pattern": "^[0-9,a-f,A-F]{24}$"
+                                    },
+                                    "description": "Идентификатор"
+                              }
+                        ]
+                  }
+            }
+      },
+      "tags": [
+            {
+                  "name": "Управление каталогом"
+            },
+            {
+                  "name": "Категории товаров"
+            },
+            {
+                  "name": "Управление каталогом+Категории товаров"
+            },
+            {
+                  "name": "Бренды товаров"
+            },
+            {
+                  "name": "Управление каталогом+Бренды товаров"
+            }
+      ]
+}
